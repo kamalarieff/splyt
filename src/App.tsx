@@ -1,45 +1,70 @@
-import React, { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, { useState } from "react";
+import "./App.css";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { LatLngExpression, Map } from "leaflet";
 
-function App() {
-  const [count, setCount] = useState(0)
+const SINGAPORE: LatLngExpression = [1.285194, 103.8522982];
+const LONDON: LatLngExpression = [51.5049375, -0.0964509];
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+const OFFICES = {
+  SINGAPORE: SINGAPORE,
+  LONDON: LONDON,
+};
+
+function Control({
+  map,
+  newOffice,
+  changeOffice,
+}: {
+  map: Map;
+  newOffice: keyof typeof OFFICES;
+  changeOffice: () => void;
+}) {
+  console.log(map.getCenter());
+  const onClick = () => {
+    map.setView(OFFICES[newOffice]);
+    changeOffice();
+  };
+  return <button onClick={onClick}>Switch offices</button>;
 }
 
-export default App
+function App() {
+  const [map, setMap] = useState<Map | null>(null);
+  const [office, setOffice] = useState<keyof typeof OFFICES>("LONDON");
+
+  const toggleOffice = () =>
+    setOffice((c) => (c == "LONDON" ? "SINGAPORE" : "LONDON"));
+
+  return (
+    <>
+      {map ? (
+        <Control
+          map={map}
+          newOffice={office == "LONDON" ? "SINGAPORE" : "LONDON"}
+          changeOffice={toggleOffice}
+        />
+      ) : null}
+      <div id="mapid">
+        <MapContainer
+          center={OFFICES[office]}
+          zoom={13}
+          scrollWheelZoom
+          id="mapid"
+          whenCreated={setMap}
+        >
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={OFFICES[office]}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </MapContainer>
+      </div>
+    </>
+  );
+}
+
+export default App;
