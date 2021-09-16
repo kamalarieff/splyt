@@ -1,18 +1,18 @@
-var express = require("express");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var cors = require("cors");
+import express, { json, urlencoded } from "express";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import cors from "cors";
 
-var driversRouter = require("./routes/drivers");
+import driversRouter from "./routes/drivers";
 
 var app = express();
 
 app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 
 app.use("/drivers", driversRouter);
 
-module.exports = app;
+export default app;
