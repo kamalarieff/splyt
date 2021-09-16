@@ -52,7 +52,8 @@ function App() {
   const toggleOffice = () =>
     setOffice((c) => (c == "LONDON" ? "SINGAPORE" : "LONDON"));
 
-  const query = useQuery<DriversResponse>("drivers", async () => {
+  // TODO: Destructure this query object
+  const query = useQuery<DriversResponse>(["drivers", office], async () => {
     const [latitude, longitude] = OFFICES[office];
     const response = await fetch(
       `http://docker.mudah.my:3001/drivers?latitude=${latitude}&longitude=${longitude}`
