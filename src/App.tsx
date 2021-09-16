@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import "./App.css";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Tooltip,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import { LatLngExpression, Map } from "leaflet";
 import { useQuery } from "react-query";
 
+// TODO: Put this in constants
 const SINGAPORE: LatLngExpression = [1.285194, 103.8522982];
 const LONDON: LatLngExpression = [51.5049375, -0.0964509];
 
@@ -17,6 +13,7 @@ const OFFICES = {
   LONDON: LONDON,
 };
 
+// TODO: Refactor this to somewhere more appropriate
 function Control({
   map,
   newOffice,
@@ -33,6 +30,7 @@ function Control({
   return <button onClick={onClick}>Switch offices</button>;
 }
 
+// TODO: Refactor this to somewhere more appropriate
 interface DriversResponse {
   pickup_eta: number;
   drivers: {
@@ -45,6 +43,8 @@ interface DriversResponse {
   }[];
 }
 
+// FIXME: When you change the slider, it is doing something weird with the markers
+// Maybe need to change how we query stuff
 function Slider({
   value,
   onChange,
@@ -68,6 +68,7 @@ function Slider({
   );
 }
 
+// TODO: Refactor this to somewhere appropriate
 function App() {
   const [map, setMap] = useState<Map | null>(null);
   const [office, setOffice] = useState<keyof typeof OFFICES>("LONDON");
@@ -77,11 +78,14 @@ function App() {
     setOffice((c) => (c == "LONDON" ? "SINGAPORE" : "LONDON"));
 
   // TODO: Destructure this query object
+  // TODO: Refactor this into its own hook
   const query = useQuery<DriversResponse>(
     ["drivers", office, numDrivers],
     async () => {
       const [latitude, longitude] = OFFICES[office];
       const response = await fetch(
+        // TODO: Use the querystring package for this
+        // TODO: Move endpoints to config
         `http://docker.mudah.my:3001/drivers?latitude=${latitude}&longitude=${longitude}${
           numDrivers ? `&count=${numDrivers}` : ""
         }`
@@ -97,6 +101,8 @@ function App() {
     { refetchInterval: 3000 }
   );
 
+  // TODO: Show something when there is an error
+  // Add tests for this
   if (query.isError) {
     console.log(query?.error?.message || "");
   }
@@ -124,9 +130,7 @@ function App() {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker position={OFFICES[office]}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
+            <Tooltip>Office</Tooltip>
           </Marker>
           {query.isSuccess &&
             query.data.drivers.map((driver) => (

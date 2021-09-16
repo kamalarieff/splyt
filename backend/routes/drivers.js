@@ -4,6 +4,7 @@ const fetch = (...args) =>
 var router = express.Router();
 const { query, validationResult } = require("express-validator");
 
+// TODO: Add tests for these validations
 /* GET list of drivers. */
 router.get(
   "/",
@@ -16,6 +17,7 @@ router.get(
       return res.status(400).json({ errors: errors.array() });
     }
 
+    // TODO: Use the querystring package for this
     fetch(
       `https://qa-interview-test.splytech.dev/api/drivers?latitude=${
         req.query.latitude
