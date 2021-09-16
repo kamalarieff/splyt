@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import "./App.css";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Tooltip,
+} from "react-leaflet";
 import { LatLngExpression, Map } from "leaflet";
+import { useQuery } from "react-query";
 
 const SINGAPORE: LatLngExpression = [1.285194, 103.8522982];
 const LONDON: LatLngExpression = [51.5049375, -0.0964509];
@@ -20,12 +26,23 @@ function Control({
   newOffice: keyof typeof OFFICES;
   changeOffice: () => void;
 }) {
-  console.log(map.getCenter());
   const onClick = () => {
     map.setView(OFFICES[newOffice]);
     changeOffice();
   };
   return <button onClick={onClick}>Switch offices</button>;
+}
+
+interface DriversResponse {
+  pickup_eta: number;
+  drivers: {
+    driver_id: string;
+    location: {
+      bearing: number;
+      latitude: number;
+      longitude: number;
+    };
+  }[];
 }
 
 function App() {
@@ -34,6 +51,25 @@ function App() {
 
   const toggleOffice = () =>
     setOffice((c) => (c == "LONDON" ? "SINGAPORE" : "LONDON"));
+
+  const query = useQuery<DriversResponse>("drivers", async () => {
+    const [latitude, longitude] = OFFICES[office];
+    const response = await fetch(
+      `http://docker.mudah.my:3001/drivers?latitude=${latitude}&longitude=${longitude}`
+    );
+    if (!response.ok) {
+      return response.json().then(({ errors }) => {
+        const [error] = errors;
+        throw Error(error.msg);
+      });
+    }
+    return response.json();
+  });
+
+  console.log(query);
+  if (query.isError) {
+    console.log(query?.error?.message || "");
+  }
 
   return (
     <>
@@ -61,6 +97,15 @@ function App() {
               A pretty CSS3 popup. <br /> Easily customizable.
             </Popup>
           </Marker>
+          {query.isSuccess &&
+            query.data.drivers.map((driver) => (
+              <Marker
+                position={[driver.location.latitude, driver.location.longitude]}
+                key={driver.driver_id}
+              >
+                <Tooltip>{driver.driver_id}</Tooltip>
+              </Marker>
+            ))}
         </MapContainer>
       </div>
     </>
