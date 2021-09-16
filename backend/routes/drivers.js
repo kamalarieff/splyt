@@ -9,6 +9,7 @@ router.get(
   "/",
   query("latitude").exists().withMessage("latitude is required"),
   query("longitude").exists().withMessage("longitude is required"),
+  query("count").optional().isNumeric().withMessage("count must be a number"),
   function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -16,7 +17,11 @@ router.get(
     }
 
     fetch(
-      `https://qa-interview-test.splytech.dev/api/drivers?latitude=${req.query.latitude}&longitude=${req.query.longitude}`
+      `https://qa-interview-test.splytech.dev/api/drivers?latitude=${
+        req.query.latitude
+      }&longitude=${req.query.longitude}${
+        req.query.count ? `&count=${req.query.count}` : ""
+      }`
     )
       .then((res) => res.json())
       .then((drivers) => res.json(drivers));

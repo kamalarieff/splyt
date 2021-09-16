@@ -45,35 +45,65 @@ interface DriversResponse {
   }[];
 }
 
+function Slider({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (arg0: number) => void;
+}) {
+  return (
+    <>
+      <label htmlFor="driver-slider">Number of drivers slider: {value}</label>
+      <input
+        id="driver-slider"
+        type="range"
+        step="1"
+        min="1"
+        max="10"
+        value={value}
+        onChange={(e) => onChange(parseInt(e.target.value))}
+      />
+    </>
+  );
+}
+
 function App() {
   const [map, setMap] = useState<Map | null>(null);
   const [office, setOffice] = useState<keyof typeof OFFICES>("LONDON");
+  const [numDrivers, setNumDrivers] = useState<number>(0);
 
   const toggleOffice = () =>
     setOffice((c) => (c == "LONDON" ? "SINGAPORE" : "LONDON"));
 
   // TODO: Destructure this query object
-  const query = useQuery<DriversResponse>(["drivers", office], async () => {
-    const [latitude, longitude] = OFFICES[office];
-    const response = await fetch(
-      `http://docker.mudah.my:3001/drivers?latitude=${latitude}&longitude=${longitude}`
-    );
-    if (!response.ok) {
-      return response.json().then(({ errors }) => {
-        const [error] = errors;
-        throw Error(error.msg);
-      });
-    }
-    return response.json();
-  });
+  const query = useQuery<DriversResponse>(
+    ["drivers", office, numDrivers],
+    async () => {
+      const [latitude, longitude] = OFFICES[office];
+      const response = await fetch(
+        `http://docker.mudah.my:3001/drivers?latitude=${latitude}&longitude=${longitude}${
+          numDrivers ? `&count=${numDrivers}` : ""
+        }`
+      );
+      if (!response.ok) {
+        return response.json().then(({ errors }) => {
+          const [error] = errors;
+          throw Error(error.msg);
+        });
+      }
+      return response.json();
+    },
+    { refetchInterval: 3000 }
+  );
 
-  console.log(query);
   if (query.isError) {
     console.log(query?.error?.message || "");
   }
 
   return (
     <>
+      <Slider value={numDrivers} onChange={setNumDrivers} />
       {map ? (
         <Control
           map={map}
