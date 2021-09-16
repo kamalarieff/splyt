@@ -1,8 +1,8 @@
-var express = require("express");
-const fetch = (...args) =>
-  import("node-fetch").then(({ default: fetch }) => fetch(...args));
-var router = express.Router();
-const { query, validationResult } = require("express-validator");
+import express from "express";
+import fetch from "node-fetch";
+import { query, validationResult } from "express-validator";
+
+const router = express.Router();
 
 // TODO: Add tests for these validations
 /* GET list of drivers. */
@@ -11,7 +11,7 @@ router.get(
   query("latitude").exists().withMessage("latitude is required"),
   query("longitude").exists().withMessage("longitude is required"),
   query("count").optional().isNumeric().withMessage("count must be a number"),
-  function (req, res, next) {
+  function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
