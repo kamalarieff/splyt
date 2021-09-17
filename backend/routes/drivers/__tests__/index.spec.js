@@ -89,6 +89,10 @@ describe("driver", () => {
       );
     });
 
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
     it("should call the underlying endpoint with correct params", async () => {
       const response = await request.get("/?latitude=123&longitude=456");
 
@@ -105,7 +109,7 @@ describe("driver", () => {
 
       expect(response.status).toBe(200);
       expect(fetch).toHaveBeenCalledWith(
-        "https://qa-interview-test.splytech.dev/api/drivers?latitude=123&longitude=456&count=1"
+        "https://qa-interview-test.splytech.dev/api/drivers?count=1&latitude=123&longitude=456"
       );
     });
   });

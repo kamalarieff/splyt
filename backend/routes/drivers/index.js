@@ -1,12 +1,12 @@
 import express from "express";
-// import fetch from "node-fetch";
+import { URL } from "url";
+import qs from "query-string";
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 import { query, validationResult } from "express-validator";
 
 const router = express.Router();
 
-// TODO: Add tests for these validations
 /* GET list of drivers. */
 router.get(
   "/",
@@ -19,14 +19,18 @@ router.get(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    // TODO: Use the querystring package for this
-    fetch(
-      `https://qa-interview-test.splytech.dev/api/drivers?latitude=${
-        req.query.latitude
-      }&longitude=${req.query.longitude}${
-        req.query.count ? `&count=${req.query.count}` : ""
-      }`
-    )
+    const url = new URL("https://qa-interview-test.splytech.dev/api/drivers");
+    const queryParams = qs.stringify(
+      {
+        latitude: req.query.latitude,
+        longitude: req.query.longitude,
+        count: req.query.count,
+      },
+      { skipNull: true }
+    );
+    url.search = queryParams;
+
+    fetch(url.toString())
       .then((res) => res.json())
       .then((drivers) => res.json(drivers));
   }
