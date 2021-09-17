@@ -1,21 +1,13 @@
 import React, { useState } from "react";
-import { LatLngExpression, Map } from "leaflet";
+import { Map } from "leaflet";
 import { useQuery } from "react-query";
 import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 
+import { OFFICES } from "../../utils/constants";
 import { Slider } from "../Slider";
 import Switch from "./Switch";
 
 import "./Map.css";
-
-// TODO: Refactor this to somewhere more appropriate
-const SINGAPORE: LatLngExpression = [1.285194, 103.8522982];
-const LONDON: LatLngExpression = [51.5049375, -0.0964509];
-
-const OFFICES = {
-  SINGAPORE: SINGAPORE,
-  LONDON: LONDON,
-};
 
 function MapComponent() {
   const [map, setMap] = useState<Map | null>(null);
