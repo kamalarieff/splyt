@@ -17,19 +17,6 @@ const OFFICES = {
   LONDON: LONDON,
 };
 
-// TODO: Refactor this to somewhere more appropriate
-interface DriversResponse {
-  pickup_eta: number;
-  drivers: {
-    driver_id: string;
-    location: {
-      bearing: number;
-      latitude: number;
-      longitude: number;
-    };
-  }[];
-}
-
 function MapComponent() {
   const [map, setMap] = useState<Map | null>(null);
   const [office, setOffice] = useState<keyof typeof OFFICES>("LONDON");
@@ -40,7 +27,7 @@ function MapComponent() {
 
   // TODO: Destructure this query object
   // TODO: Refactor this into its own hook
-  const query = useQuery<DriversResponse>(
+  const query = useQuery<Drivers>(
     ["drivers", office, numDrivers],
     async () => {
       const [latitude, longitude] = OFFICES[office];
