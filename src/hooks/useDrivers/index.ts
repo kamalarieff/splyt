@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 
-import { OFFICES } from "utils/constants";
+import { OFFICES, REFETCH_INTERVAL } from "utils/constants";
 import { getDrivers } from "apis/drivers";
 
 interface Params {
@@ -22,7 +22,7 @@ function useDrivers({ office, numDrivers }: Params) {
       }
       return response.json();
     },
-    { refetchInterval: 3000 }
+    { refetchInterval: REFETCH_INTERVAL }
   );
 }
 

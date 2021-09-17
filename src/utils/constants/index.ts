@@ -7,3 +7,5 @@ export const OFFICES = {
   SINGAPORE: SINGAPORE,
   LONDON: LONDON,
 };
+
+export const REFETCH_INTERVAL = 3000;
