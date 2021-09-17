@@ -1,7 +1,7 @@
 import React from "react";
 import type { Map } from "leaflet";
 
-import { OFFICES } from "../../utils/constants";
+import { OFFICES } from "utils/constants";
 
 function Switch({
   map,

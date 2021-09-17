@@ -3,9 +3,9 @@ import { Map } from "leaflet";
 import { useQuery } from "react-query";
 import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 
-import { OFFICES } from "../../utils/constants";
-import getDrivers from "../../apis/drivers";
-import { Slider } from "../Slider";
+import { OFFICES } from "utils/constants";
+import getDrivers from "apis/drivers";
+import { Slider } from "components/Slider";
 import Switch from "./Switch";
 
 import "./Map.css";
@@ -13,7 +13,7 @@ import "./Map.css";
 function MapComponent() {
   const [map, setMap] = useState<Map | null>(null);
   const [office, setOffice] = useState<keyof typeof OFFICES>("LONDON");
-  const [numDrivers, setNumDrivers] = useState<number>(0);
+  const [numDrivers, setNumDrivers] = useState<number>(1);
 
   const toggleOffice = () =>
     setOffice((c) => (c == "LONDON" ? "SINGAPORE" : "LONDON"));
