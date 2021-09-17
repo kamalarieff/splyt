@@ -2,15 +2,23 @@ import express from "express";
 import { URL } from "url";
 import qs from "query-string";
 import { query, validationResult } from "express-validator";
-import { RequestInfo, RequestInit } from "node-fetch";
-const fetch = (...args: any[]) =>
-  import("node-fetch").then(({ default: fetch }) =>
-    fetch(...(args as [RequestInfo, RequestInit]))
-  );
+const fetch = require("node-fetch");
 
 import { DRIVERS_API } from "../../../config";
 
 const router = express.Router();
+
+interface Drivers {
+  pickup_eta: number;
+  drivers: {
+    driver_id: string;
+    location: {
+      bearing: number;
+      latitude: number;
+      longitude: number;
+    };
+  }[];
+}
 
 /* GET list of drivers. */
 router.get(
@@ -36,8 +44,8 @@ router.get(
     url.search = queryParams;
 
     fetch(url.toString())
-      .then((res) => res.json())
-      .then((drivers) => res.json(drivers));
+      .then((fetchRes: Response) => fetchRes.json())
+      .then((drivers: Drivers) => res.json(drivers));
   }
 );
 

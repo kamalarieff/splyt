@@ -18,7 +18,7 @@
     "express": "~4.16.1",
     "express-validator": "^6.12.1",
     "morgan": "~1.9.1",
-    "node-fetch": "^3.0.0",
+    "node-fetch": "^2.6.2",
     "query-string": "^7.0.1"
   },
   "devDependencies": {
