@@ -2,10 +2,13 @@ import express from "express";
 import { URL } from "url";
 import qs from "query-string";
 import { query, validationResult } from "express-validator";
-const fetch = (...args) =>
-  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+import { RequestInfo, RequestInit } from "node-fetch";
+const fetch = (...args: any[]) =>
+  import("node-fetch").then(({ default: fetch }) =>
+    fetch(...(args as [RequestInfo, RequestInit]))
+  );
 
-import { DRIVERS_API } from "../../config/";
+import { DRIVERS_API } from "../../config";
 
 const router = express.Router();
 
@@ -24,9 +27,9 @@ router.get(
     const url = new URL(DRIVERS_API);
     const queryParams = qs.stringify(
       {
-        latitude: req.query.latitude,
-        longitude: req.query.longitude,
-        count: req.query.count,
+        latitude: req.query?.latitude,
+        longitude: req.query?.longitude,
+        count: req.query?.count,
       },
       { skipNull: true }
     );
@@ -38,4 +41,4 @@ router.get(
   }
 );
 
-module.exports = router;
+export default router;
