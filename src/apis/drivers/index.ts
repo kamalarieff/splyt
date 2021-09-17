@@ -6,7 +6,7 @@ interface Params {
   numDrivers: number;
 }
 
-function getDrivers({ latitude, longitude, numDrivers }: Params) {
+export function getDrivers({ latitude, longitude, numDrivers }: Params) {
   return fetch(
     // TODO: Use the querystring package for this
     `${DRIVERS_ENDPOINT}?latitude=${latitude}&longitude=${longitude}${
@@ -14,5 +14,3 @@ function getDrivers({ latitude, longitude, numDrivers }: Params) {
     }`
   );
 }
-
-export default getDrivers;

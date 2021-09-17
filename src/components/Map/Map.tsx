@@ -3,7 +3,7 @@ import { Map } from "leaflet";
 import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 
 import { OFFICES } from "utils/constants";
-import useDrivers from "hooks/useDrivers";
+import { useDrivers } from "hooks";
 
 import { Slider } from "components/Slider";
 import Switch from "./Switch";

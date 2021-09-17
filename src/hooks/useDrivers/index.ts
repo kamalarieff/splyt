@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 
 import { OFFICES } from "utils/constants";
-import getDrivers from "apis/drivers";
+import { getDrivers } from "apis/drivers";
 
 interface Params {
   office: keyof typeof OFFICES;
