@@ -8,7 +8,7 @@ const fetch = (...args: any[]) =>
     fetch(...(args as [RequestInfo, RequestInit]))
   );
 
-import { DRIVERS_API } from "../../config";
+import { DRIVERS_API } from "../../../config";
 
 const router = express.Router();
 

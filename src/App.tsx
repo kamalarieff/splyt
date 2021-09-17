@@ -86,7 +86,7 @@ function App() {
       const response = await fetch(
         // TODO: Use the querystring package for this
         // TODO: Move endpoints to config
-        `http://docker.mudah.my:3001/drivers?latitude=${latitude}&longitude=${longitude}${
+        `http://docker.mudah.my:3001/api/v1/drivers?latitude=${latitude}&longitude=${longitude}${
           numDrivers ? `&count=${numDrivers}` : ""
         }`
       );
