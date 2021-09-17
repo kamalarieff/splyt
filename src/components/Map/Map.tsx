@@ -18,9 +18,8 @@ function MapComponent() {
   const toggleOffice = () =>
     setOffice((c) => (c == "LONDON" ? "SINGAPORE" : "LONDON"));
 
-  // TODO: Destructure this query object
   // TODO: Refactor this into its own hook
-  const query = useQuery<Drivers>(
+  const { isSuccess, data, isError, error } = useQuery<Drivers>(
     ["drivers", office, numDrivers],
     async () => {
       const [latitude, longitude] = OFFICES[office];
@@ -38,8 +37,8 @@ function MapComponent() {
 
   // TODO: Show something when there is an error
   // Add tests for this
-  if (query.isError) {
-    console.log(query?.error?.message || "");
+  if (isError) {
+    console.log(error?.message || "");
   }
 
   return (
@@ -64,17 +63,24 @@ function MapComponent() {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          {/* TODO: Office should have different icon */}
           <Marker position={OFFICES[office]}>
             <Tooltip>Office</Tooltip>
           </Marker>
-          {query.isSuccess &&
-            query.data.drivers.map((driver) => (
-              <Marker
-                position={[driver.location.latitude, driver.location.longitude]}
-                key={driver.driver_id}
-              >
-                <Tooltip>{driver.driver_id}</Tooltip>
-              </Marker>
+          {isSuccess &&
+            data?.drivers.map((driver) => (
+              <>
+                {/* TODO: Driver should have different icons */}
+                <Marker
+                  position={[
+                    driver.location.latitude,
+                    driver.location.longitude,
+                  ]}
+                  key={driver.driver_id}
+                >
+                  <Tooltip>{driver.driver_id}</Tooltip>
+                </Marker>
+              </>
             ))}
         </MapContainer>
       </div>
