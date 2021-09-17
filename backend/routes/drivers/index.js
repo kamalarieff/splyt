@@ -1,9 +1,11 @@
 import express from "express";
 import { URL } from "url";
 import qs from "query-string";
+import { query, validationResult } from "express-validator";
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
-import { query, validationResult } from "express-validator";
+
+import { DRIVERS_API } from "../../config/";
 
 const router = express.Router();
 
@@ -19,7 +21,7 @@ router.get(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const url = new URL("https://qa-interview-test.splytech.dev/api/drivers");
+    const url = new URL(DRIVERS_API);
     const queryParams = qs.stringify(
       {
         latitude: req.query.latitude,
