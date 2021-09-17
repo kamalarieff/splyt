@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 
 import { OFFICES } from "../../utils/constants";
+import getDrivers from "../../apis/drivers";
 import { Slider } from "../Slider";
 import Switch from "./Switch";
 
@@ -23,13 +24,7 @@ function MapComponent() {
     ["drivers", office, numDrivers],
     async () => {
       const [latitude, longitude] = OFFICES[office];
-      const response = await fetch(
-        // TODO: Use the querystring package for this
-        // TODO: Move endpoints to config
-        `http://docker.mudah.my:3001/api/v1/drivers?latitude=${latitude}&longitude=${longitude}${
-          numDrivers ? `&count=${numDrivers}` : ""
-        }`
-      );
+      const response = await getDrivers({ latitude, longitude, numDrivers });
       if (!response.ok) {
         return response.json().then(({ errors }) => {
           const [error] = errors;
