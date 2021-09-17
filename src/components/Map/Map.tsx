@@ -49,41 +49,38 @@ function MapComponent() {
           map={map}
           newOffice={office == "LONDON" ? "SINGAPORE" : "LONDON"}
           changeOffice={toggleOffice}
-        />
-      ) : null}
-      <div id="mapid">
-        <MapContainer
-          center={OFFICES[office]}
-          zoom={13}
-          scrollWheelZoom
-          id="mapid"
-          whenCreated={setMap}
         >
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {/* TODO: Office should have different icon */}
-          <Marker position={OFFICES[office]}>
-            <Tooltip>Office</Tooltip>
-          </Marker>
-          {isSuccess &&
-            data?.drivers.map((driver) => (
-              <>
-                {/* TODO: Driver should have different icons */}
-                <Marker
-                  position={[
-                    driver.location.latitude,
-                    driver.location.longitude,
-                  ]}
-                  key={driver.driver_id}
-                >
-                  <Tooltip>{driver.driver_id}</Tooltip>
-                </Marker>
-              </>
-            ))}
-        </MapContainer>
-      </div>
+          Switch offices
+        </Switch>
+      ) : null}
+      <MapContainer
+        center={OFFICES[office]}
+        zoom={13}
+        scrollWheelZoom
+        id="mapid"
+        whenCreated={setMap}
+      >
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {/* TODO: Office should have different icon */}
+        <Marker position={OFFICES[office]}>
+          <Tooltip>Office</Tooltip>
+        </Marker>
+        {isSuccess &&
+          data?.drivers.map((driver) => (
+            <>
+              {/* TODO: Driver should have different icons */}
+              <Marker
+                position={[driver.location.latitude, driver.location.longitude]}
+                key={driver.driver_id}
+              >
+                <Tooltip>{driver.driver_id}</Tooltip>
+              </Marker>
+            </>
+          ))}
+      </MapContainer>
     </>
   );
 }
