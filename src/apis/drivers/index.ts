@@ -1,4 +1,4 @@
-import { DRIVERS_ENDPOINT } from "../../configs";
+import { DRIVERS_ENDPOINT } from "configs";
 
 interface Params {
   latitude: number;

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Map } from "leaflet";
-import { useQuery } from "react-query";
 import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 
 import { OFFICES } from "utils/constants";
-import getDrivers from "apis/drivers";
+import useDrivers from "hooks/useDrivers";
+
 import { Slider } from "components/Slider";
 import Switch from "./Switch";
 
@@ -18,22 +18,10 @@ function MapComponent() {
   const toggleOffice = () =>
     setOffice((c) => (c == "LONDON" ? "SINGAPORE" : "LONDON"));
 
-  // TODO: Refactor this into its own hook
-  const { isSuccess, data, isError, error } = useQuery<Drivers>(
-    ["drivers", office, numDrivers],
-    async () => {
-      const [latitude, longitude] = OFFICES[office];
-      const response = await getDrivers({ latitude, longitude, numDrivers });
-      if (!response.ok) {
-        return response.json().then(({ errors }) => {
-          const [error] = errors;
-          throw Error(error.msg);
-        });
-      }
-      return response.json();
-    },
-    { refetchInterval: 3000 }
-  );
+  const { isSuccess, data, isError, error } = useDrivers({
+    office,
+    numDrivers,
+  });
 
   // TODO: Show something when there is an error
   // Add tests for this
