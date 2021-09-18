@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import { Layout } from "components/Layout";
 import { Map } from "./components/Map";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -16,7 +17,9 @@ const queryClient = new QueryClient({
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Map />
+      <Layout>
+        <Map />
+      </Layout>
     </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")
