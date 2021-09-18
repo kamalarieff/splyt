@@ -1,11 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import { Map } from "./components/Map";
-import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
+
+import App from "./App";
+import { Map } from "containers/Map";
+
+import { Slider } from "components/Slider";
 import { Header } from "components/Header";
 import { Footer } from "components/Footer";
+
+import "./index.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,7 +32,33 @@ ReactDOM.render(
             <Header>Splyt</Header>
           </div>
           <div className="col-span-5 md:col-span-3 md:col-start-2">
-            <Map />
+            <div className="flex flex-col space-y-8">
+              <Map
+                Controls={({
+                  officeClickHandler,
+                  myLocationClickHandler,
+                  setNumDrivers,
+                  numDrivers,
+                }) => {
+                  return (
+                    <div className="flex flex-col space-y-4 w-1/2 m-auto">
+                      <Slider value={numDrivers} onChange={setNumDrivers} />
+                      <div className="flex justify-center space-x-4">
+                        <button className="button" onClick={officeClickHandler}>
+                          Switch offices
+                        </button>
+                        <button
+                          className="button"
+                          onClick={myLocationClickHandler}
+                        >
+                          My location
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }}
+              />
+            </div>
           </div>
           <div className="col-span-5 flex items-end">
             <Footer>Footer</Footer>

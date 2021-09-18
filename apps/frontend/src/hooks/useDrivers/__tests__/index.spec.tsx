@@ -34,7 +34,7 @@ describe("sad path", () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useDrivers({ office: "SINGAPORE", numDrivers: 1 }),
+      () => useDrivers({ position: "SINGAPORE", numDrivers: 1 }),
       { wrapper: createWrapper() }
     );
 
@@ -61,7 +61,7 @@ describe("happy path", () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useDrivers({ office: "SINGAPORE", numDrivers: 1 }),
+      () => useDrivers({ position: "SINGAPORE", numDrivers: 1 }),
       { wrapper: createWrapper() }
     );
 

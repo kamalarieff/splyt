@@ -1,19 +1,24 @@
 import { useQuery } from "react-query";
 
-import { OFFICES, REFETCH_INTERVAL } from "utils/constants";
+import { REFETCH_INTERVAL } from "utils/constants";
 import { getDrivers } from "apis/drivers";
+import { LatLngLiteral } from "leaflet";
 
 interface Params {
-  office: keyof typeof OFFICES;
+  position: LatLngLiteral;
   numDrivers: number;
 }
 
-function useDrivers({ office, numDrivers }: Params) {
+function useDrivers({ position, numDrivers }: Params) {
   return useQuery<Drivers>(
-    ["drivers", office, numDrivers],
+    ["drivers", position, numDrivers],
     async () => {
-      const [latitude, longitude] = OFFICES[office];
-      const response = await getDrivers({ latitude, longitude, numDrivers });
+      const { lat, lng } = position;
+      const response = await getDrivers({
+        latitude: lat,
+        longitude: lng,
+        numDrivers,
+      });
       if (!response.ok) {
         return response.json().then(({ errors }) => {
           const [error] = errors;

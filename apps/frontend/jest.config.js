@@ -85,6 +85,7 @@ module.exports = {
     "^utils(.*)$": "<rootDir>/src/utils$1",
     "^apis(.*)$": "<rootDir>/src/apis$1",
     "^components(.*)$": "<rootDir>/src/components$1",
+    "^containers(.*)$": "<rootDir>/src/containers$1",
     "^hooks(.*)$": "<rootDir>/src/hooks$1",
     "^configs(.*)$": "<rootDir>/src/configs$1",
   },
