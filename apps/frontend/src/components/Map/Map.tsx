@@ -32,17 +32,19 @@ function MapComponent() {
   }
 
   return (
-    <>
-      <Slider value={numDrivers} onChange={setNumDrivers} />
-      {map ? (
-        <Switch
-          map={map}
-          newOffice={office == "LONDON" ? "SINGAPORE" : "LONDON"}
-          changeOffice={toggleOffice}
-        >
-          Switch offices
-        </Switch>
-      ) : null}
+    <div className="flex flex-col space-y-8">
+      <div className="flex flex-col space-y-4 w-1/2 m-auto">
+        <Slider value={numDrivers} onChange={setNumDrivers} />
+        {map ? (
+          <Switch
+            map={map}
+            newOffice={office == "LONDON" ? "SINGAPORE" : "LONDON"}
+            changeOffice={toggleOffice}
+          >
+            Switch offices
+          </Switch>
+        ) : null}
+      </div>
       <MapContainer
         center={OFFICES[office]}
         zoom={13}
@@ -71,7 +73,7 @@ function MapComponent() {
             </>
           ))}
       </MapContainer>
-    </>
+    </div>
   );
 }
 
