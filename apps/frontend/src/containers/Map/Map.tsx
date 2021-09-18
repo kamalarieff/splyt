@@ -23,7 +23,7 @@ const carIcon = L.icon({
 });
 
 interface Props {
-  Controls: ({
+  Controls?: ({
     officeClickHandler,
     myLocationClickHandler,
     setNumDrivers,
@@ -82,7 +82,7 @@ function MapContainer({ Controls }: Props) {
 
   return (
     <>
-      {Controls({
+      {Controls?.({
         officeClickHandler,
         myLocationClickHandler,
         numDrivers,

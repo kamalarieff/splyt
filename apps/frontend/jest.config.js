@@ -88,6 +88,9 @@ module.exports = {
     "^containers(.*)$": "<rootDir>/src/containers$1",
     "^hooks(.*)$": "<rootDir>/src/hooks$1",
     "^configs(.*)$": "<rootDir>/src/configs$1",
+    "^icons(.*)$": "jest-transform-stub",
+    ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$":
+      "jest-transform-stub",
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
