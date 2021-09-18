@@ -9,6 +9,9 @@ interface Params {
   numDrivers: number;
 }
 
+/**
+ * useDrivers hook to fetch the data from the API
+ */
 function useDrivers({ position, numDrivers }: Params) {
   return useQuery<Drivers>(
     ["drivers", position, numDrivers],
