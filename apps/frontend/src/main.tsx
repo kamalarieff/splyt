@@ -11,6 +11,10 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
+      // set no cache so that we don't have that jumping effect when
+      // changing to a fetched query
+      // since it should mimic a realtime app, I think this is the correct solution
+      cacheTime: 0,
     },
   },
 });
