@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "leaflet": "^1.7.1",
+    "query-string": "^7.0.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-leaflet": "^3.2.1",
