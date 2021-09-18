@@ -3,7 +3,7 @@ import L, { Map } from "leaflet";
 import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 
 import { OFFICES } from "utils/constants";
-import { useDrivers } from "hooks";
+import { useDebounce, useDrivers } from "hooks";
 
 import { Slider } from "components/Slider";
 import Switch from "./Switch";
@@ -23,13 +23,15 @@ function MapComponent() {
   const [office, setOffice] = useState<keyof typeof OFFICES>("LONDON");
   const [numDrivers, setNumDrivers] = useState<number>(1);
 
-  const toggleOffice = () =>
-    setOffice((c) => (c == "LONDON" ? "SINGAPORE" : "LONDON"));
+  const debouncedNumDrivers = useDebounce(numDrivers, 1000);
 
   const { isSuccess, data, isError, error } = useDrivers({
     office,
-    numDrivers,
+    numDrivers: debouncedNumDrivers,
   });
+
+  const toggleOffice = () =>
+    setOffice((c) => (c == "LONDON" ? "SINGAPORE" : "LONDON"));
 
   // TODO: Show something when there is an error
   // Add tests for this
