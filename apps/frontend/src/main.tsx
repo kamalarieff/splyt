@@ -5,6 +5,8 @@ import { Layout } from "components/Layout";
 import { Map } from "./components/Map";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Header } from "components/Header";
+import { Footer } from "components/Footer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,9 +19,11 @@ const queryClient = new QueryClient({
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+      <Header>Splyt</Header>
       <Layout>
         <Map />
       </Layout>
+      <Footer>Footer</Footer>
     </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")
