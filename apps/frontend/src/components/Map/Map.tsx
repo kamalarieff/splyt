@@ -9,13 +9,20 @@ import { Slider } from "components/Slider";
 import Switch from "./Switch";
 
 import office from "icons/office.svg";
+import car from "icons/car.svg";
 
 import "./Map.css";
 
-const icon = L.icon({
+const officeIcon = L.icon({
   iconUrl: office,
   iconSize: [30, 30],
   iconAnchor: [30, 30],
+});
+
+const carIcon = L.icon({
+  iconUrl: car,
+  iconSize: [40, 40],
+  iconAnchor: [40, 40],
 });
 
 function MapComponent() {
@@ -66,20 +73,18 @@ function MapComponent() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={OFFICES[office]} icon={icon}>
+        <Marker position={OFFICES[office]} icon={officeIcon}>
           <Tooltip>Office</Tooltip>
         </Marker>
         {isSuccess &&
           data?.drivers.map((driver) => (
-            <>
-              {/* TODO: Driver should have different icons */}
-              <Marker
-                position={[driver.location.latitude, driver.location.longitude]}
-                key={driver.driver_id}
-              >
-                <Tooltip>{driver.driver_id}</Tooltip>
-              </Marker>
-            </>
+            <Marker
+              position={[driver.location.latitude, driver.location.longitude]}
+              key={driver.driver_id}
+              icon={carIcon}
+            >
+              <Tooltip>{driver.driver_id}</Tooltip>
+            </Marker>
           ))}
       </MapContainer>
     </div>
