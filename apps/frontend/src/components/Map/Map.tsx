@@ -26,7 +26,9 @@ function MapComponent() {
   // TODO: Show something when there is an error
   // Add tests for this
   if (isError) {
-    console.log(error?.message || "");
+    if (error instanceof Error) {
+      console.log(error?.message || "Something went wrong.");
+    }
   }
 
   return (
