@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Map } from "leaflet";
+import L, { Map } from "leaflet";
 import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 
 import { OFFICES } from "utils/constants";
@@ -8,7 +8,15 @@ import { useDrivers } from "hooks";
 import { Slider } from "components/Slider";
 import Switch from "./Switch";
 
+import office from "icons/office.svg";
+
 import "./Map.css";
+
+const icon = L.icon({
+  iconUrl: office,
+  iconSize: [30, 30],
+  iconAnchor: [30, 30],
+});
 
 function MapComponent() {
   const [map, setMap] = useState<Map | null>(null);
@@ -56,8 +64,7 @@ function MapComponent() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/* TODO: Office should have different icon */}
-        <Marker position={OFFICES[office]}>
+        <Marker position={OFFICES[office]} icon={icon}>
           <Tooltip>Office</Tooltip>
         </Marker>
         {isSuccess &&

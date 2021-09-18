@@ -14,6 +14,7 @@ export default defineConfig({
       },
       { find: "hooks", replacement: path.resolve(__dirname, "/src/hooks") },
       { find: "configs", replacement: path.resolve(__dirname, "/src/configs") },
+      { find: "icons", replacement: path.resolve(__dirname, "/src/icons") },
     ],
   },
   plugins: [reactRefresh()],
