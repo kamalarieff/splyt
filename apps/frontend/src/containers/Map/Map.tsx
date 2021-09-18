@@ -1,71 +1,26 @@
 import React, { useEffect, useState } from "react";
-import L, { LatLng, LatLngLiteral, Map } from "leaflet";
+import L, { LatLngLiteral, Map } from "leaflet";
 import {
   MapContainer as LeafletMapContainer,
   Marker,
-  Popup,
   TileLayer,
   Tooltip,
-  useMapEvents,
 } from "react-leaflet";
 
 import { OFFICES } from "utils/constants";
 import { useDebounce, useDrivers } from "hooks";
 
-import office from "icons/office.svg";
+import LocationMarker from "./LocationMarker";
+
 import car from "icons/car.svg";
-import marker from "icons/marker.svg";
 
 import "./Map.css";
-
-const officeIcon = L.icon({
-  iconUrl: office,
-  iconSize: [30, 30],
-  iconAnchor: [30, 30],
-});
 
 const carIcon = L.icon({
   iconUrl: car,
   iconSize: [40, 40],
   iconAnchor: [40, 40],
 });
-
-const markerIcon = L.icon({
-  iconUrl: marker,
-  iconSize: [40, 40],
-  iconAnchor: [40, 40],
-});
-
-type ICON_TYPE = "OFFICE" | "MARKER";
-
-function LocationMarker({
-  position,
-  onLocationFound,
-  iconType,
-}: {
-  position: LatLngLiteral;
-  onLocationFound: (arg0: LatLng) => void;
-  iconType: ICON_TYPE;
-}) {
-  const map = useMapEvents({
-    locationfound(e) {
-      onLocationFound(e.latlng);
-      map.flyTo(e.latlng, map.getZoom());
-    },
-  });
-
-  return iconType === "OFFICE" ? (
-    <Marker position={position} icon={officeIcon}>
-      <Popup>Office is here</Popup>
-      <Tooltip>Office</Tooltip>
-    </Marker>
-  ) : (
-    <Marker position={position} icon={markerIcon}>
-      <Popup>You are here</Popup>
-      <Tooltip>You</Tooltip>
-    </Marker>
-  );
-}
 
 interface Props {
   Controls: ({
