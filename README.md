@@ -5,6 +5,12 @@
 ## Install
 
 ```sh
+npm install
+```
+
+This will install lerna first. Lerna is needed to bootstrap our frontend and backend apps.
+
+```sh
 npm run bootstrap
 ```
 
