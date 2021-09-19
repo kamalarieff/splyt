@@ -24,6 +24,10 @@ npm run start
 
 Open [localhost:3000](http://localhost:3000) to see the site.
 
+The backend is running at [localhost:3001](http://localhost:3001).
+
+You can view the API documentation at [localhost:3001/api-docs](http://localhost:3001/api-docs). The API documentation is written using swagger API.
+
 ## Run tests
 
 ```sh
