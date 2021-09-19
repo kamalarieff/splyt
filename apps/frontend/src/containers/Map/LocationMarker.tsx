@@ -1,30 +1,13 @@
 import React from "react";
-import { Marker, Popup, Tooltip, useMapEvents } from "react-leaflet";
-import L, { LatLng, LatLngLiteral } from "leaflet";
-
-import office from "icons/office.svg";
-import marker from "icons/marker.svg";
-
-const officeIcon = L.icon({
-  iconUrl: office,
-  iconSize: [30, 30],
-  iconAnchor: [30, 30],
-});
-
-const markerIcon = L.icon({
-  iconUrl: marker,
-  iconSize: [40, 40],
-  iconAnchor: [40, 40],
-});
+import { useMapEvents } from "react-leaflet";
+import { LatLng } from "leaflet";
 
 function LocationMarker({
-  position,
   onLocationFound,
-  iconType,
+  children,
 }: {
-  position: LatLngLiteral;
   onLocationFound: (arg0: LatLng) => void;
-  iconType: ICON_TYPE;
+  children?: React.ReactNode;
 }) {
   const map = useMapEvents({
     locationfound(e) {
@@ -33,17 +16,7 @@ function LocationMarker({
     },
   });
 
-  return iconType === "OFFICE" ? (
-    <Marker position={position} icon={officeIcon}>
-      <Popup>Office is here</Popup>
-      <Tooltip>Office</Tooltip>
-    </Marker>
-  ) : (
-    <Marker position={position} icon={markerIcon}>
-      <Popup>You are here</Popup>
-      <Tooltip>You</Tooltip>
-    </Marker>
-  );
+  return <>{children}</>;
 }
 
 export default LocationMarker;

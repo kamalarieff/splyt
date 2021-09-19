@@ -1,31 +1,20 @@
 import React from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 
 import { OFFICES } from "utils/constants";
 import Map from "../Map";
 
 jest.mock("hooks/useDrivers");
-jest.mock("containers/Map/LocationMarker", () => {
-  return {
-    __esModule: true,
-    default: jest.fn(() => <div />),
-  };
-});
-
 jest.mock("react-leaflet", () => {
-  const { MapContainer, TileLayer, Tooltip } =
-    jest.requireActual("react-leaflet");
+  const { MapContainer } = jest.requireActual("react-leaflet");
   return {
     __esModule: true,
     MapContainer,
-    TileLayer,
-    Tooltip,
-    Marker: () => <div data-testid="marker"></div>,
   };
 });
 
 import useDrivers from "hooks/useDrivers";
-import LocationMarker from "../LocationMarker";
 
 it("should show correct number of markers when setting the number of drivers", async () => {
   (useDrivers as jest.Mock).mockReturnValue({
@@ -54,19 +43,30 @@ it("should show correct number of markers when setting the number of drivers", a
           />
         );
       }}
-    />
+    >
+      {({ drivers }) => (
+        <>
+          {drivers?.map((driver) => (
+            <div key={driver.driver_id}>driver marker</div>
+          ))}
+        </>
+      )}
+    </Map>
   );
 
   fireEvent.change(screen.getByTestId("slider"), { target: { value: "7" } });
   await waitFor(() => {
-    expect(screen.getAllByTestId("marker")).toHaveLength(7);
+    expect(screen.getAllByText("driver marker")).toHaveLength(7);
   });
 });
 
-it("should call LocationMarker with correct params when click on the buttons", () => {
-  (useDrivers as jest.Mock).mockReturnValue({
-    isSuccess: true,
-  });
+it("should show correct marker when click on the buttons", () => {
+  const MockOfficeMarker = jest
+    .fn()
+    .mockImplementation(() => <div>office marker</div>);
+  const MockMyLocationMarker = jest
+    .fn()
+    .mockImplementation(() => <div>my location marker</div>);
 
   render(
     <Map
@@ -78,38 +78,44 @@ it("should call LocationMarker with correct params when click on the buttons", (
           </>
         );
       }}
-    />
+    >
+      {({ iconType, position }) => (
+        <>
+          {iconType === "OFFICE" ? (
+            <MockOfficeMarker position={position} />
+          ) : (
+            <MockMyLocationMarker position={position} />
+          )}
+        </>
+      )}
+    </Map>
   );
 
-  expect(LocationMarker).toHaveBeenLastCalledWith(
+  expect(screen.getByText("office")).toBeInTheDocument();
+  expect(MockOfficeMarker).toHaveBeenLastCalledWith(
     expect.objectContaining({
-      iconType: "OFFICE",
       position: OFFICES["LONDON"],
     }),
     {}
   );
 
   fireEvent.click(screen.getByText("office"));
-  expect(LocationMarker).toHaveBeenLastCalledWith(
+  expect(screen.getByText("office")).toBeInTheDocument();
+  expect(MockOfficeMarker).toHaveBeenLastCalledWith(
     expect.objectContaining({
-      iconType: "OFFICE",
       position: OFFICES["SINGAPORE"],
     }),
     {}
   );
 
   fireEvent.click(screen.getByText("my location"));
-  expect(LocationMarker).toHaveBeenLastCalledWith(
-    expect.objectContaining({
-      iconType: "MARKER",
-    }),
-    {}
-  );
+  expect(screen.getByText("my location marker")).toBeInTheDocument();
+  expect(MockMyLocationMarker).toHaveBeenCalled();
 
   fireEvent.click(screen.getByText("office"));
-  expect(LocationMarker).toHaveBeenLastCalledWith(
+  expect(screen.getByText("office")).toBeInTheDocument();
+  expect(MockOfficeMarker).toHaveBeenLastCalledWith(
     expect.objectContaining({
-      iconType: "OFFICE",
       position: OFFICES["LONDON"],
     }),
     {}

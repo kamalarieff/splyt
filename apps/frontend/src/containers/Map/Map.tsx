@@ -1,26 +1,11 @@
 import React, { useEffect, useState } from "react";
-import L, { LatLngLiteral, Map } from "leaflet";
-import {
-  MapContainer as LeafletMapContainer,
-  Marker,
-  TileLayer,
-  Tooltip,
-} from "react-leaflet";
+import { LatLngLiteral, Map } from "leaflet";
+import { MapContainer as LeafletMapContainer } from "react-leaflet";
 
 import { OFFICES } from "utils/constants";
 import { useDebounce, useDrivers } from "hooks";
 
-import LocationMarker from "./LocationMarker";
-
-import car from "icons/car.svg";
-
 import "./Map.css";
-
-const carIcon = L.icon({
-  iconUrl: car,
-  iconSize: [40, 40],
-  iconAnchor: [40, 40],
-});
 
 interface Props {
   Controls?: ({
@@ -34,6 +19,17 @@ interface Props {
     setNumDrivers: (arg0: number) => void;
     numDrivers: number;
   }) => JSX.Element;
+  children?: ({
+    drivers,
+    position,
+    setPosition,
+    iconType,
+  }: {
+    drivers: DriversLocation | null | undefined;
+    position: LatLngLiteral;
+    setPosition: (arg0: LatLngLiteral) => void;
+    iconType: ICON_TYPE;
+  }) => JSX.Element;
 }
 
 /**
@@ -44,7 +40,7 @@ interface Props {
  *
  * @param Controls Component as a prop. There are some callbacks here that can be called by the calling component
  */
-function MapContainer({ Controls }: Props) {
+function MapContainer({ Controls, children }: Props) {
   const [map, setMap] = useState<Map | null>(null);
   const [office, setOffice] = useState<keyof typeof OFFICES>("LONDON");
   const [numDrivers, setNumDrivers] = useState<number>(1);
@@ -95,25 +91,12 @@ function MapContainer({ Controls }: Props) {
         id="mapid"
         whenCreated={setMap}
       >
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {isSuccess &&
-          data?.drivers.map((driver) => (
-            <Marker
-              position={[driver.location.latitude, driver.location.longitude]}
-              key={driver.driver_id}
-              icon={carIcon}
-            >
-              <Tooltip>{driver.driver_id}</Tooltip>
-            </Marker>
-          ))}
-        <LocationMarker
-          position={position}
-          onLocationFound={setPosition}
-          iconType={iconType}
-        />
+        {children?.({
+          drivers: isSuccess ? data?.drivers : null,
+          position,
+          setPosition,
+          iconType,
+        })}
       </LeafletMapContainer>
     </>
   );

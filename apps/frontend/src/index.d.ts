@@ -9,3 +9,5 @@ declare interface Drivers {
     };
   }[];
 }
+
+declare type DriversLocation = Drivers["drivers"];

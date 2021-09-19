@@ -1,12 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { TileLayer } from "react-leaflet";
 
-import { Map } from "containers/Map";
+import { LocationMarker, Map } from "containers/Map";
 
 import { Slider } from "components/Slider";
 import { Header } from "components/Header";
 import { Footer } from "components/Footer";
+import {
+  DriverMarker,
+  MyLocationMarker,
+  OfficeMarker,
+} from "components/Markers";
 
 import "./index.css";
 
@@ -16,7 +22,8 @@ const queryClient = new QueryClient({
       retry: false,
       // set no cache so that we don't have that jumping effect when
       // changing to a fetched query
-      // since it should mimic a realtime app, I think this is the correct solution
+      // since it should mimic a realtime app, I think this is the correct
+      // solution
       cacheTime: 0,
     },
   },
@@ -56,7 +63,31 @@ ReactDOM.render(
                     </div>
                   );
                 }}
-              />
+              >
+                {({ drivers, position, setPosition, iconType }) => (
+                  <>
+                    <TileLayer
+                      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    {drivers?.map((driver) => (
+                      <DriverMarker
+                        key={driver.driver_id}
+                        id={driver.driver_id}
+                        latitude={driver.location.latitude}
+                        longitude={driver.location.longitude}
+                      />
+                    ))}
+                    <LocationMarker onLocationFound={setPosition}>
+                      {iconType === "OFFICE" ? (
+                        <OfficeMarker position={position} />
+                      ) : (
+                        <MyLocationMarker position={position} />
+                      )}
+                    </LocationMarker>
+                  </>
+                )}
+              </Map>
             </div>
           </div>
           <div className="col-span-5 flex items-end">
