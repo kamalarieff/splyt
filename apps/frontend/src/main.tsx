@@ -74,8 +74,10 @@ ReactDOM.render(
                       <DriverMarker
                         key={driver.driver_id}
                         id={driver.driver_id}
-                        latitude={driver.location.latitude}
-                        longitude={driver.location.longitude}
+                        position={{
+                          lat: driver.location.latitude,
+                          lng: driver.location.longitude,
+                        }}
                       />
                     ))}
                     <LocationMarker onLocationFound={setPosition}>

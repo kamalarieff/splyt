@@ -1,13 +1,12 @@
 import React from "react";
 import { Marker, Tooltip } from "react-leaflet";
-import L from "leaflet";
+import L, { LatLngLiteral } from "leaflet";
 
 import car from "icons/car.svg";
 
 interface Props {
   id: string;
-  latitude: number;
-  longitude: number;
+  position: LatLngLiteral;
 }
 
 const carIcon = L.icon({
@@ -16,9 +15,9 @@ const carIcon = L.icon({
   iconAnchor: [40, 40],
 });
 
-function DriverMarker({ id, latitude, longitude }: Props) {
+function DriverMarker({ id, position }: Props) {
   return (
-    <Marker key={id} position={[latitude, longitude]} icon={carIcon}>
+    <Marker key={id} position={position} icon={carIcon}>
       <Tooltip>{id}</Tooltip>
     </Marker>
   );
