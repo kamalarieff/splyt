@@ -20,7 +20,68 @@ interface Drivers {
   }[];
 }
 
-/* GET list of drivers. */
+/**
+ * @swagger
+ *
+ * /api/v1/drivers:
+ *   get:
+ *     summary: Get drivers coordinates
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: latitude
+ *         description: Latitude
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: longitude
+ *         description: Longitude
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: count
+ *         description: Number of drivers
+ *         in: query
+ *         schema:
+ *           type: number
+ *     responses:
+ *       200:
+ *         description: json object of drivers
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                pickup_eta:
+ *                  type: number
+ *                  description: Expected time of arrival of driver
+ *                  example: 24
+ *                drivers:
+ *                  type: array
+ *                  items:
+ *                    type: object
+ *                    properties:
+ *                      driver_id:
+ *                        type: string
+ *                        example: x-123
+ *                      location:
+ *                        type: object
+ *                        properties:
+ *                          latitude:
+ *                            type: number
+ *                            description: Latitude of car
+ *                            example: 1.0123
+ *                          longitude:
+ *                            type: number
+ *                            description: Longitude of car
+ *                            example: 1.0123
+ *                          bearing:
+ *                            type: number
+ *                            description: Direction of where car is heading
+ *                            example: 123
+ */
 router.get(
   "/",
   query("latitude").exists().withMessage("latitude is required"),
