@@ -30,9 +30,7 @@ const queryClient = new QueryClient({
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <header className="w-full bg-blue-300 h-16 flex justify-center items-center">
-        Splyt
-      </header>
+      <header className="header">Splyt</header>
       <main className="main">
         <div className="min-h-full w-full md:w-1/2 flex justify-center items-center m-auto">
           <div className="flex flex-col space-y-8 w-full">
@@ -90,9 +88,7 @@ ReactDOM.render(
           </div>
         </div>
       </main>
-      <footer className="w-full bg-blue-300 h-16 flex justify-center items-center">
-        Footer
-      </footer>
+      <footer className="footer">Footer</footer>
     </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")

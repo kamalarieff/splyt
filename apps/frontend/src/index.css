@@ -2,20 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --header-height: 4rem;
+    --footer-height: 4rem;
+}
+
 body {
     height: 100vh;
 }
 
 .main {
-    height: calc(100vh - 4rem - 4rem);
+    height: calc(100vh - var(--header-height) - var(--footer-height));
 }
 
 .button {
     @apply inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:ring focus:outline-none
 }
 
-/* @variants focus {
-    .button {
-        @appl shadow-outline outline-none;
-    }
-} */
+.header {
+    @apply w-full bg-blue-300 flex justify-center items-center;
+    height: var(--header-height);
+}
+
+.footer {
+    @apply w-full bg-blue-300 flex justify-center items-center;
+    height: var(--footer-height);
+}
