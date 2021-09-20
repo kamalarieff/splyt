@@ -5,6 +5,8 @@
 
 ## Background
 
+I'm using react-query to handle all of the data fetching.
+
 I'm using leaflet to render the map component. I'm also using tailwind for styling. One utility package that I'm using is the query-string package which helps me to build the URL to call the endpoint.
 
 I'm using vite instead of create-react-app. It is much faster because it is using esbuild.
