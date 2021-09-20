@@ -6,8 +6,6 @@ import { TileLayer } from "react-leaflet";
 import { LocationMarker, Map } from "containers/Map";
 
 import { Slider } from "components/Slider";
-import { Header } from "components/Header";
-import { Footer } from "components/Footer";
 import {
   DriverMarker,
   MyLocationMarker,
@@ -32,71 +30,69 @@ const queryClient = new QueryClient({
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+      <header className="w-full bg-blue-300 h-16 flex justify-center items-center">
+        Splyt
+      </header>
       <main className="main">
-        <div className="min-h-full grid grid-cols-5 gap-4">
-          <div className="col-span-5">
-            <Header>Splyt</Header>
-          </div>
-          <div className="col-span-5 md:col-span-3 md:col-start-2">
-            <div className="flex flex-col space-y-8">
-              <Map
-                Controls={({
-                  officeClickHandler,
-                  myLocationClickHandler,
-                  setNumDrivers,
-                  numDrivers,
-                }) => {
-                  return (
-                    <div className="flex flex-col space-y-4 w-1/2 m-auto">
-                      <Slider value={numDrivers} onChange={setNumDrivers} />
-                      <div className="flex justify-center space-x-4">
-                        <button className="button" onClick={officeClickHandler}>
-                          Switch offices
-                        </button>
-                        <button
-                          className="button"
-                          onClick={myLocationClickHandler}
-                        >
-                          My location
-                        </button>
-                      </div>
+        <div className="min-h-full w-full md:w-1/2 flex justify-center items-center m-auto">
+          <div className="flex flex-col space-y-8 w-full">
+            <Map
+              Controls={({
+                officeClickHandler,
+                myLocationClickHandler,
+                setNumDrivers,
+                numDrivers,
+              }) => {
+                return (
+                  <div className="flex flex-col space-y-4 w-3/4 md:w-1/2 m-auto">
+                    <Slider value={numDrivers} onChange={setNumDrivers} />
+                    <div className="flex justify-center space-x-4">
+                      <button className="button" onClick={officeClickHandler}>
+                        Switch offices
+                      </button>
+                      <button
+                        className="button"
+                        onClick={myLocationClickHandler}
+                      >
+                        My location
+                      </button>
                     </div>
-                  );
-                }}
-              >
-                {({ drivers, position, setPosition, iconType }) => (
-                  <>
-                    <TileLayer
-                      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  </div>
+                );
+              }}
+            >
+              {({ drivers, position, setPosition, iconType }) => (
+                <>
+                  <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  {drivers?.map((driver) => (
+                    <DriverMarker
+                      key={driver.driver_id}
+                      id={driver.driver_id}
+                      position={{
+                        lat: driver.location.latitude,
+                        lng: driver.location.longitude,
+                      }}
                     />
-                    {drivers?.map((driver) => (
-                      <DriverMarker
-                        key={driver.driver_id}
-                        id={driver.driver_id}
-                        position={{
-                          lat: driver.location.latitude,
-                          lng: driver.location.longitude,
-                        }}
-                      />
-                    ))}
-                    <LocationMarker onLocationFound={setPosition}>
-                      {iconType === "OFFICE" ? (
-                        <OfficeMarker position={position} />
-                      ) : (
-                        <MyLocationMarker position={position} />
-                      )}
-                    </LocationMarker>
-                  </>
-                )}
-              </Map>
-            </div>
-          </div>
-          <div className="col-span-5 flex items-end">
-            <Footer>Footer</Footer>
+                  ))}
+                  <LocationMarker onLocationFound={setPosition}>
+                    {iconType === "OFFICE" ? (
+                      <OfficeMarker position={position} />
+                    ) : (
+                      <MyLocationMarker position={position} />
+                    )}
+                  </LocationMarker>
+                </>
+              )}
+            </Map>
           </div>
         </div>
       </main>
+      <footer className="w-full bg-blue-300 h-16 flex justify-center items-center">
+        Footer
+      </footer>
     </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")

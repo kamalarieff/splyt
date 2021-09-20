@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-.main {
+body {
     height: 100vh;
+}
+
+.main {
+    height: calc(100vh - 4rem - 4rem);
 }
 
 .button {
