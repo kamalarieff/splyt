@@ -6,9 +6,9 @@ interface Props {
 
 function Header({ children }: Props) {
   return (
-    <div className="w-full bg-blue-300 h-16 flex justify-center items-center">
+    <header className="w-full bg-blue-300 h-16 flex justify-center items-center">
       {children}
-    </div>
+    </header>
   );
 }
 
